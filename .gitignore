@@ -1,4 +1,4 @@
-node_modules/
+git rm .env.examplenode_modules/
 .env
 .DS_Store
 *.log
