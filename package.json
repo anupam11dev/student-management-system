@@ -1,0 +1,30 @@
+{
+  "name": "student-management-system",
+  "version": "1.0.0",
+  "description": "Student Management System (SMS) - BTech CSE Mini Project",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "seed": "node backend/utils/seed.js"
+  },
+  "keywords": [
+    "student-management-system",
+    "express",
+    "mongodb",
+    "mongoose",
+    "attendance",
+    "marks"
+  ],
+  "author": "SMS Team",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.8",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.11.1"
+  }
+}

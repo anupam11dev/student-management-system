@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Students Directory - Student Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <!-- Dynamic Sidebar -->
+    <aside class="app-sidebar" id="app-sidebar"></aside>
+
+    <!-- Main View -->
+    <div class="app-main">
+      <header class="app-header">
+        <div class="header-left">
+          <button class="menu-toggle" id="menu-toggle">☰</button>
+          <h1 class="page-title">Student Directory</h1>
+        </div>
+        <div class="header-right">
+          <button id="btn-add-student" class="btn btn-primary">
+            <span>➕</span> Add Student
+          </button>
+          <div class="header-date" id="header-live-date"></div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <!-- Filter & Search Toolbar -->
+        <div class="card" style="padding: 1.15rem 1.5rem; margin-bottom: 1.25rem;">
+          <div class="action-bar" style="margin-bottom: 0;">
+            <div class="search-input-wrapper">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="search-input" class="form-control search-input" placeholder="Search by name, roll no, email...">
+            </div>
+
+            <div class="filter-group">
+              <select id="filter-course" class="form-control" style="width: auto; min-width: 160px;">
+                <option value="">All Programs</option>
+                <option value="BTech CSE">BTech CSE</option>
+                <option value="BTech IT">BTech IT</option>
+                <option value="BCA">BCA</option>
+                <option value="MCA">MCA</option>
+              </select>
+
+              <select id="filter-semester" class="form-control" style="width: auto; min-width: 140px;">
+                <option value="">All Semesters</option>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student Records Table -->
+        <div class="card">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Roll Number</th>
+                  <th>Student Name</th>
+                  <th>Program / Semester</th>
+                  <th>Contact Info</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="students-table-body">
+                <!-- Loaded via students.js -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination Bar -->
+          <div class="pagination">
+            <div class="pagination-info" id="pagination-info">Showing records...</div>
+            <div class="pagination-controls">
+              <button id="prev-page-btn" class="btn btn-secondary btn-sm" disabled>Previous</button>
+              <button id="next-page-btn" class="btn btn-secondary btn-sm" disabled>Next</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add / Edit Student Modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Add New Student</h3>
+        <button class="modal-close" id="close-modal-btn">&times;</button>
+      </div>
+
+      <form id="student-form">
+        <div class="modal-body">
+          <input type="hidden" id="student-id-field">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required" for="student-name">Full Name</label>
+              <input type="text" id="student-name" class="form-control" placeholder="e.g. Rahul Sharma" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" for="student-roll">Roll Number</label>
+              <input type="text" id="student-roll" class="form-control" placeholder="e.g. CSE2026001" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required" for="student-email">Email Address</label>
+              <input type="email" id="student-email" class="form-control" placeholder="student@sms.edu" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" for="student-phone">Phone Number</label>
+              <input type="tel" id="student-phone" class="form-control" placeholder="+91 98765 43210" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required" for="student-course">Program / Course</label>
+              <select id="student-course" class="form-control" required>
+                <option value="BTech CSE">BTech CSE</option>
+                <option value="BTech IT">BTech IT</option>
+                <option value="BCA">BCA</option>
+                <option value="MCA">MCA</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label required" for="student-semester">Semester</label>
+              <select id="student-semester" class="form-control" required>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3" selected>Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+              </select>
+            </div>
+            <div class="form-group" style="max-width: 100px;">
+              <label class="form-label" for="student-section">Section</label>
+              <input type="text" id="student-section" class="form-control" value="A" maxlength="2">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required" for="student-dob">Date of Birth</label>
+              <input type="date" id="student-dob" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="student-address">Residential Address</label>
+              <input type="text" id="student-address" class="form-control" placeholder="City, State">
+            </div>
+          </div>
+
+          <!-- Linked Login Account Options -->
+          <div id="account-creation-section" style="background-color: var(--bg-subtle); padding: 0.85rem; border-radius: var(--radius-sm); margin-top: 0.5rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: 600; font-size: 0.85rem; cursor: pointer;">
+              <input type="checkbox" id="create-account-checkbox" checked>
+              <span>Create linked student login account</span>
+            </label>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+              Enables student to log in using their email and default password (Student@123).
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancel-modal-btn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="save-student-btn">Save Student</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Quick Mark Attendance Modal (from Student Section) -->
+  <div class="modal-overlay" id="quick-attendance-modal">
+    <div class="modal-box" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="quick-att-title">Mark Attendance</h3>
+        <button class="modal-close" onclick="closeQuickAttModal()">&times;</button>
+      </div>
+      <form id="quick-att-form">
+        <div class="modal-body">
+          <input type="hidden" id="quick-att-student-id">
+          
+          <div style="background-color: var(--bg-subtle); padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.15rem; font-size: 0.9rem;">
+            Student: <strong id="quick-att-student-name"></strong> • Roll: <strong id="quick-att-student-roll" style="color: var(--primary);"></strong>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required" for="quick-att-course">Course / Subject</label>
+            <select id="quick-att-course" class="form-control" required>
+              <option value="">Loading enrolled courses...</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required" for="quick-att-date">Date</label>
+              <input type="date" id="quick-att-date" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label required">Status</label>
+              <div style="display: flex; gap: 0.5rem; margin-top: 0.35rem;">
+                <label style="cursor: pointer; display: flex; align-items: center; gap: 0.35rem; padding: 0.5rem 0.85rem; border: 1px solid #a7f3d0; background: #ecfdf5; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem;">
+                  <input type="radio" name="quick_att_status" value="Present" checked>
+                  <span style="color: #065f46;">Present</span>
+                </label>
+                <label style="cursor: pointer; display: flex; align-items: center; gap: 0.35rem; padding: 0.5rem 0.85rem; border: 1px solid #fecaca; background: #fef2f2; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem;">
+                  <input type="radio" name="quick_att_status" value="Absent">
+                  <span style="color: #991b1b;">Absent</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="quick-att-remarks">Remarks (Optional)</label>
+            <input type="text" id="quick-att-remarks" class="form-control" placeholder="e.g. Attended on time / Sick leave">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeQuickAttModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="quick-att-submit-btn">Save Attendance</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Quick Enter Marks Modal (from Student Section) -->
+  <div class="modal-overlay" id="quick-marks-modal">
+    <div class="modal-box" style="max-width: 540px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="quick-marks-title">Enter Exam Marks</h3>
+        <button class="modal-close" onclick="closeQuickMarksModal()">&times;</button>
+      </div>
+      <form id="quick-marks-form">
+        <div class="modal-body">
+          <input type="hidden" id="quick-marks-student-id">
+          
+          <div style="background-color: var(--bg-subtle); padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.15rem; font-size: 0.9rem;">
+            Student: <strong id="quick-marks-student-name"></strong> • Roll: <strong id="quick-marks-student-roll" style="color: var(--primary);"></strong>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required" for="quick-marks-course">Course / Subject</label>
+            <select id="quick-marks-course" class="form-control" required>
+              <option value="">Loading enrolled courses...</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label required" for="quick-marks-exam-type">Assessment Type</label>
+            <select id="quick-marks-exam-type" class="form-control" required onchange="onQuickMarksExamChange()">
+              <option value="Assignment" selected>Assignment (Max 20)</option>
+              <option value="Internal">Internal Exam (Max 30)</option>
+              <option value="Semester">Semester End (Max 100)</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required" for="quick-marks-obtained">Obtained Marks</label>
+              <input type="number" step="0.5" min="0" id="quick-marks-obtained" class="form-control" placeholder="e.g. 18" required oninput="calculateQuickMarksPct()">
+            </div>
+            <div class="form-group">
+              <label class="form-label required" for="quick-marks-max">Max Marks</label>
+              <input type="number" step="0.5" min="1" id="quick-marks-max" class="form-control" value="20" required oninput="calculateQuickMarksPct()">
+            </div>
+          </div>
+
+          <div id="quick-marks-preview" style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: 1px solid var(--border-color); padding: 0.75rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem; font-size: 0.9rem;">
+            <span>Calculated Score: <strong id="quick-marks-pct-text">--%</strong></span>
+            <span id="quick-marks-badge"><span class="badge badge-neutral">--</span></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="quick-marks-remarks">Remarks (Optional)</label>
+            <input type="text" id="quick-marks-remarks" class="form-control" placeholder="e.g. Excellent conceptual clarity">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeQuickMarksModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="quick-marks-submit-btn">Save Marks</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/students.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Academic Reports & Transcripts - Student Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .tab-nav {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--border-color);
+      margin-bottom: 1.5rem;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition);
+    }
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+    .tab-btn.active {
+      color: var(--primary);
+    }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <!-- Dynamic Sidebar -->
+    <aside class="app-sidebar" id="app-sidebar"></aside>
+
+    <!-- Main View -->
+    <div class="app-main">
+      <header class="app-header">
+        <div class="header-left">
+          <button class="menu-toggle" id="menu-toggle">☰</button>
+          <h1 class="page-title">Academic Records & Reports</h1>
+        </div>
+        <div class="header-right">
+          <button id="btn-print-transcript" class="btn btn-primary">
+            <span>🖨️</span> Print / Save PDF
+          </button>
+          <div class="header-date" id="header-live-date"></div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <!-- Navigation Tabs (Individual Transcript vs Class Performance) -->
+        <div class="tab-nav" id="report-tabs">
+          <button class="tab-btn active" id="tab-individual-report">📑 Individual Student Transcript</button>
+          <button class="tab-btn" id="tab-class-report">👥 Class Performance Summary</button>
+        </div>
+
+        <!-- 1. Individual Student Report Tab -->
+        <div id="individual-report-content" class="tab-content">
+          <!-- Student Selector (for Admin & Teacher) -->
+          <div class="card no-print" id="report-controls-card" style="padding: 1.15rem 1.5rem; margin-bottom: 1.5rem;">
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;">
+              <div>
+                <h3 style="font-size: 1.05rem; font-weight: 700;">Select Student for Academic Transcript</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">
+                  Combines verified attendance statistics, subject-wise examination scores, SGPA, and eligibility status.
+                </p>
+              </div>
+              <div style="min-width: 300px;">
+                <select id="report-student-select" class="form-control">
+                  <option value="">Loading students...</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Printable Transcript Document Container -->
+          <div id="transcript-container">
+            <!-- Loaded dynamically via reports.js -->
+          </div>
+        </div>
+
+        <!-- 2. Class Performance Summary Tab -->
+        <div id="class-report-content" class="tab-content" style="display: none;">
+          <!-- Filter Bar -->
+          <div class="card no-print" style="padding: 1.15rem 1.5rem; margin-bottom: 1.5rem;">
+            <div class="action-bar" style="margin-bottom: 0;">
+              <div>
+                <h3 style="font-size: 1.05rem; font-weight: 700;">Class Performance Roster</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted);" id="class-report-count">
+                  Filter students by degree program and semester.
+                </p>
+              </div>
+
+              <div class="filter-group">
+                <select id="class-filter-course" class="form-control" style="width: auto; min-width: 160px;">
+                  <option value="">All Programs</option>
+                  <option value="BTech CSE">BTech CSE</option>
+                  <option value="BTech IT">BTech IT</option>
+                  <option value="BCA">BCA</option>
+                  <option value="MCA">MCA</option>
+                </select>
+
+                <select id="class-filter-semester" class="form-control" style="width: auto; min-width: 140px;">
+                  <option value="">All Semesters</option>
+                  <option value="1">Semester 1</option>
+                  <option value="2">Semester 2</option>
+                  <option value="3" selected>Semester 3</option>
+                  <option value="4">Semester 4</option>
+                  <option value="5">Semester 5</option>
+                  <option value="6">Semester 6</option>
+                  <option value="7">Semester 7</option>
+                  <option value="8">Semester 8</option>
+                </select>
+
+                <button id="btn-print-class-report" class="btn btn-secondary">
+                  <span>🖨️</span> Print Class Roster
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Class Performance Table -->
+          <div class="card">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Roll Number</th>
+                    <th>Student Name</th>
+                    <th>Degree Program</th>
+                    <th>Attendance %</th>
+                    <th>Aggregate Marks %</th>
+                    <th>Grade</th>
+                    <th>Result Status</th>
+                  </tr>
+                </thead>
+                <tbody id="class-report-tbody">
+                  <!-- Loaded via reports.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/reports.js"></script>
+</body>
+</html>
+

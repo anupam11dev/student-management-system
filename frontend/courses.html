@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Courses & Curriculum - Student Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <!-- Dynamic Sidebar -->
+    <aside class="app-sidebar" id="app-sidebar"></aside>
+
+    <!-- Main View -->
+    <div class="app-main">
+      <header class="app-header">
+        <div class="header-left">
+          <button class="menu-toggle" id="menu-toggle">☰</button>
+          <h1 class="page-title">Courses & Curriculum</h1>
+        </div>
+        <div class="header-right">
+          <button id="btn-add-course" class="btn btn-primary">
+            <span>➕</span> Add Course
+          </button>
+          <div class="header-date" id="header-live-date"></div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <!-- Filter Toolbar -->
+        <div class="card" style="padding: 1.15rem 1.5rem; margin-bottom: 1.5rem;">
+          <div class="action-bar" style="margin-bottom: 0;">
+            <div class="search-input-wrapper">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="search-course" class="form-control search-input" placeholder="Search by course code or name...">
+            </div>
+
+            <div class="filter-group">
+              <select id="filter-course-semester" class="form-control" style="width: auto; min-width: 150px;">
+                <option value="">All Semesters</option>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course Cards Grid -->
+        <div id="courses-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+          <!-- Loaded via courses.js -->
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add / Edit Course Modal -->
+  <div class="modal-overlay" id="course-modal-overlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="course-modal-title">Add Course</h3>
+        <button class="modal-close" id="close-course-modal">&times;</button>
+      </div>
+
+      <form id="course-form">
+        <div class="modal-body">
+          <input type="hidden" id="course-id-field">
+
+          <div class="form-row">
+            <div class="form-group" style="flex: 2;">
+              <label class="form-label required" for="course-name">Course Title</label>
+              <input type="text" id="course-name" class="form-control" placeholder="e.g. Data Structures & Algorithms" required>
+            </div>
+            <div class="form-group" style="flex: 1;">
+              <label class="form-label required" for="course-code">Course Code</label>
+              <input type="text" id="course-code" class="form-control" placeholder="e.g. CS301" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label required" for="course-semester">Semester</label>
+              <select id="course-semester" class="form-control" required>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3" selected>Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label required" for="course-credits">Credits</label>
+              <input type="number" id="course-credits" class="form-control" value="4" min="1" max="10" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="course-department">Department</label>
+              <input type="text" id="course-department" class="form-control" value="CSE">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="course-teacher">Assigned Faculty / Instructor</label>
+            <select id="course-teacher" class="form-control">
+              <option value="">-- Unassigned (Assign Later) --</option>
+              <!-- Loaded dynamically -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="course-description">Course Description / Syllabus Overview</label>
+            <textarea id="course-description" class="form-control" rows="3" placeholder="Key topics and learning outcomes..."></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancel-course-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="save-course-btn">Save Course</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- View Enrolled Students Modal -->
+  <div class="modal-overlay" id="enrolled-modal-overlay">
+    <div class="modal-box" style="max-width: 700px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="enrolled-modal-title">Enrolled Students</h3>
+        <button class="modal-close" id="close-enrolled-modal">&times;</button>
+      </div>
+      <div class="modal-body" id="enrolled-students-list" style="padding: 0;">
+        <!-- Loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/courses.js"></script>
+</body>
+</html>
+

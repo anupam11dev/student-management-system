@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Management - Student Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .tab-nav {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--border-color);
+      margin-bottom: 1.5rem;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition);
+    }
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+    .tab-btn.active {
+      color: var(--primary);
+    }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <!-- Dynamic Sidebar -->
+    <aside class="app-sidebar" id="app-sidebar"></aside>
+
+    <!-- Main View -->
+    <div class="app-main">
+      <header class="app-header">
+        <div class="header-left">
+          <button class="menu-toggle" id="menu-toggle">☰</button>
+          <h1 class="page-title">Attendance Management</h1>
+        </div>
+        <div class="header-right">
+          <div class="header-date" id="header-live-date"></div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <!-- Navigation Tabs (Mark vs Records) -->
+        <div class="tab-nav">
+          <button class="tab-btn active" id="tab-mark-attendance-btn">✏️ Mark Attendance</button>
+          <button class="tab-btn" id="tab-summary-btn">📊 Attendance Summary & Percentages</button>
+        </div>
+
+        <!-- 1. Mark Attendance Content (Admin / Teacher) -->
+        <div id="tab-mark-attendance-content" class="tab-content">
+          <!-- Selection & Configuration Bar -->
+          <div class="card" style="padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;">
+            <div style="display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: flex-end;">
+              <div class="form-group" style="margin-bottom: 0; flex: 2; min-width: 250px;">
+                <label class="form-label required" for="attendance-course-select">Select Course</label>
+                <select id="attendance-course-select" class="form-control" required>
+                  <option value="">Loading assigned courses...</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 180px;">
+                <label class="form-label required" for="attendance-date">Attendance Date</label>
+                <input type="date" id="attendance-date" class="form-control" required>
+              </div>
+
+              <div style="display: flex; gap: 0.5rem;">
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-mark-all-present">
+                  ✅ All Present
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-mark-all-absent">
+                  ❌ All Absent
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Attendance Counter Ticker -->
+          <div class="attendance-live-ticker" id="attendance-ticker" style="display: none;">
+            <div class="ticker-item">
+              <span>👥 Total Enrolled:</span>
+              <strong id="ticker-total">0</strong>
+            </div>
+            <div class="ticker-item">
+              <span style="color: var(--success);">✅ Present:</span>
+              <strong id="ticker-present" style="color: var(--success);">0</strong>
+            </div>
+            <div class="ticker-item">
+              <span style="color: var(--danger);">❌ Absent:</span>
+              <strong id="ticker-absent" style="color: var(--danger);">0</strong>
+            </div>
+            <div class="ticker-item">
+              <span>📈 Presence Rate:</span>
+              <strong id="ticker-rate">0%</strong>
+            </div>
+          </div>
+
+          <!-- Existing Record Alert Banner -->
+          <div id="attendance-mode-banner" style="display: none;"></div>
+
+          <!-- Student Roster Form -->
+          <form id="attendance-form">
+            <div class="card">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th style="width: 15%;">Roll Number</th>
+                      <th style="width: 30%;">Student Name</th>
+                      <th style="width: 25%;">Status</th>
+                      <th style="width: 30%;">Remarks (Optional)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="attendance-roster-body">
+                    <tr>
+                      <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                        Select a course to load the student roster.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
+                <button type="submit" id="save-attendance-btn" class="btn btn-primary" style="padding: 0.75rem 2rem;" disabled>
+                  💾 Save Attendance
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- 2. Attendance Summary / Percentages Content -->
+        <div id="tab-summary-content" class="tab-content" style="display: none;">
+          <!-- If Student Role: Personal view container -->
+          <div id="student-personal-attendance-container"></div>
+
+          <!-- If Admin / Teacher Role: Institute/Class Summary -->
+          <div id="admin-teacher-summary-section">
+            <div class="card" style="padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;">
+              <div class="action-bar" style="margin-bottom: 0;">
+                <div>
+                  <h3 style="font-size: 1.1rem; font-weight: 700;">Student Attendance Rate & Threshold Warnings</h3>
+                  <p style="font-size: 0.85rem; color: var(--text-muted);">
+                    Calculated as <code>(classes attended / total classes) x 100</code>. Flagged if below 75%.
+                  </p>
+                </div>
+                <div class="filter-group">
+                  <select id="summary-filter-course" class="form-control" style="width: auto; min-width: 200px;">
+                    <option value="">All Courses</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Roll Number</th>
+                      <th>Student Name</th>
+                      <th>Classes Attended</th>
+                      <th>Percentage</th>
+                      <th>Eligibility Status</th>
+                      <th>Report</th>
+                    </tr>
+                  </thead>
+                  <tbody id="summary-table-body">
+                    <!-- Loaded dynamically via attendance.js -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/attendance.js"></script>
+</body>
+</html>
+

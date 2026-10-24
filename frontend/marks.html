@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marks & Results - Student Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .tab-nav {
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid var(--border-color);
+      margin-bottom: 1.5rem;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition);
+    }
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+    .tab-btn.active {
+      color: var(--primary);
+    }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-wrapper">
+    <!-- Dynamic Sidebar -->
+    <aside class="app-sidebar" id="app-sidebar"></aside>
+
+    <!-- Main View -->
+    <div class="app-main">
+      <header class="app-header">
+        <div class="header-left">
+          <button class="menu-toggle" id="menu-toggle">☰</button>
+          <h1 class="page-title">Marks & Result Management</h1>
+        </div>
+        <div class="header-right">
+          <div class="header-date" id="header-live-date"></div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <!-- Navigation Tabs (For Admin & Teacher) -->
+        <div class="tab-nav" id="marks-tab-nav">
+          <button class="tab-btn active" id="tab-enter-marks-btn">📝 Enter Exam Marks</button>
+          <button class="tab-btn" id="tab-view-results-btn">📊 Student Results & Grades</button>
+        </div>
+
+        <!-- 1. Enter Marks Tab (Admin & Teacher) -->
+        <div id="tab-enter-marks-content" class="tab-content">
+          <!-- Selection & Assessment Configuration Bar -->
+          <div class="card" style="padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;">
+            <div style="display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: flex-end;">
+              <div class="form-group" style="margin-bottom: 0; flex: 2; min-width: 250px;">
+                <label class="form-label required" for="marks-course-select">Course / Subject</label>
+                <select id="marks-course-select" class="form-control" required>
+                  <option value="">Loading courses...</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0; flex: 1; min-width: 170px;">
+                <label class="form-label required" for="marks-exam-type">Assessment Type</label>
+                <select id="marks-exam-type" class="form-control" required>
+                  <option value="Assignment" selected>Assignment (Max 20)</option>
+                  <option value="Internal">Internal Exam (Max 30)</option>
+                  <option value="Semester">Semester End (Max 100)</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0; width: 130px;">
+                <label class="form-label" for="default-max-marks">Max Marks</label>
+                <input type="number" id="default-max-marks" class="form-control" value="20" min="1">
+              </div>
+            </div>
+          </div>
+
+          <!-- Student Marks Roster Form -->
+          <form id="marks-entry-form">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Grade Sheet & Score Entry</div>
+                  <div class="card-subtitle">Enter scores. Percentage and Pass/Fail (>=40%) calculate automatically.</div>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th style="width: 18%;">Roll Number</th>
+                      <th style="width: 28%;">Student Name</th>
+                      <th style="width: 18%;">Obtained Marks</th>
+                      <th style="width: 14%;">Max Marks</th>
+                      <th style="width: 11%;">Percentage</th>
+                      <th style="width: 11%;">Result</th>
+                    </tr>
+                  </thead>
+                  <tbody id="marks-entry-tbody">
+                    <tr>
+                      <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                        Select a course to load the student grade sheet.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
+                <button type="submit" id="save-marks-btn" class="btn btn-primary" style="padding: 0.75rem 2rem;" disabled>
+                  💾 Save & Submit Marks
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- 2. View Results Tab (Admin & Teacher) -->
+        <div id="tab-view-results-content" class="tab-content" style="display: none;">
+          <div class="card" style="padding: 1.25rem 1.5rem; margin-bottom: 1.25rem;">
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;">
+              <div>
+                <h3 style="font-size: 1.1rem; font-weight: 700;">Student Academic Result Lookup</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">
+                  View calculated total marks, GPA, subject-wise scores, and pass/fail status.
+                </p>
+              </div>
+              <div style="min-width: 280px;">
+                <select id="result-student-select" class="form-control">
+                  <option value="">Loading student roster...</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div id="results-summary-display">
+            <div class="card" style="text-align: center; color: var(--text-muted); padding: 3rem;">
+              Select a student above to view their complete academic performance sheet.
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Student Self-Results Container (Student Role Only) -->
+        <div id="student-results-view" style="display: none;">
+          <div id="student-personal-results-display"></div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/navbar.js"></script>
+  <script src="js/marks.js"></script>
+</body>
+</html>
+

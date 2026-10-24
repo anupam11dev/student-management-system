@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Registration - Student Management System (SMS)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      background: radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.22) 0%, transparent 40%),
+                  radial-gradient(circle at 85% 85%, rgba(99, 102, 241, 0.22) 0%, transparent 45%),
+                  #090d16;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.25rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient background grid pattern */
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .login-card {
+      background: #ffffff;
+      border-radius: var(--radius-xl);
+      padding: 2.5rem 2.25rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      position: relative;
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+
+    .login-brand-icon {
+      width: 64px;
+      height: 64px;
+      background: var(--primary-gradient);
+      border-radius: var(--radius-lg);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: white;
+      margin-bottom: 0.85rem;
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.35);
+    }
+
+    .auth-tabs {
+      display: flex;
+      background: #f1f5f9;
+      padding: 5px;
+      border-radius: var(--radius-md);
+      margin-bottom: 1.75rem;
+      gap: 5px;
+    }
+
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding: 0.65rem 0.5rem;
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+      transition: var(--transition-fast);
+      user-select: none;
+    }
+
+    .auth-tab.active {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .password-wrapper {
+      position: relative;
+    }
+
+    .password-toggle-btn {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0.25rem;
+      font-size: 1.05rem;
+      transition: var(--transition-fast);
+    }
+
+    .password-toggle-btn:hover {
+      color: var(--text-main);
+    }
+
+    .demo-accounts {
+      margin-top: 1.75rem;
+      padding-top: 1.5rem;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    .demo-accounts-title {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 800;
+      color: var(--text-muted);
+      margin-bottom: 0.85rem;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+    }
+
+    .demo-btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .btn-demo {
+      background-color: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.65rem 0.85rem;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: left;
+    }
+
+    .btn-demo:hover {
+      background-color: #eff6ff;
+      border-color: #bfdbfe;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.12);
+    }
+
+    .btn-demo-tag {
+      font-size: 0.72rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="login-brand-icon">🎓</div>
+        <h1 style="font-size: 1.65rem; font-weight: 800; color: #0f172a; letter-spacing: -0.025em;">SMS Portal</h1>
+        <p style="font-size: 0.88rem; color: #64748b; margin-top: 0.35rem; font-weight: 500;">
+          Student Management & Academic Records
+        </p>
+      </div>
+
+      <!-- Auth Tabs: Sign In vs Create Account -->
+      <div class="auth-tabs">
+        <div class="auth-tab active" id="tab-signin-btn" onclick="switchAuthTab('signin')">Sign In</div>
+        <div class="auth-tab" id="tab-register-btn" onclick="switchAuthTab('register')">Create Account</div>
+      </div>
+
+      <div id="login-alert" style="display: none; padding: 0.85rem 1.15rem; border-radius: var(--radius-md); margin-bottom: 1.35rem; font-size: 0.88rem; font-weight: 500; line-height: 1.45;"></div>
+
+      <!-- 1. SIGN IN FORM -->
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label required" for="email">Email or Username</label>
+          <input type="text" id="email" class="form-control" placeholder="name@sms.edu" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label required" for="password">Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="current-password" style="padding-right: 2.5rem;">
+            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('password')" title="Toggle password visibility">👁️</button>
+          </div>
+        </div>
+
+        <button type="submit" id="login-submit-btn" class="btn btn-primary" style="width: 100%; margin-top: 0.85rem; padding: 0.85rem; font-size: 0.98rem;">
+          Sign In
+        </button>
+      </form>
+
+      <!-- 2. REGISTER / CREATE ACCOUNT FORM -->
+      <form id="register-form" style="display: none;">
+        <div class="form-group">
+          <label class="form-label required" for="reg-name">Full Name</label>
+          <input type="text" id="reg-name" class="form-control" placeholder="e.g. Dr. Anupam Gupta" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label required" for="reg-email">Email Address</label>
+          <input type="email" id="reg-email" class="form-control" placeholder="user@sms.edu or any email" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label required" for="reg-password">Password</label>
+          <div class="password-wrapper">
+            <input type="password" id="reg-password" class="form-control" placeholder="Minimum 6 characters" minlength="6" required style="padding-right: 2.5rem;">
+            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility('reg-password')" title="Toggle password visibility">👁️</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label required" for="reg-role">Register As (Role)</label>
+          <select id="reg-role" class="form-control" required onchange="onRoleChange()">
+            <option value="admin">Institute Administrator (Admin)</option>
+            <option value="teacher">Faculty Member (Teacher)</option>
+            <option value="student" selected>Enrolled Student</option>
+          </select>
+        </div>
+
+        <div id="student-extra-fields">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="reg-roll">Roll Number (Optional)</label>
+              <input type="text" id="reg-roll" class="form-control" placeholder="e.g. CSE2026101">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reg-semester">Semester</label>
+              <select id="reg-semester" class="form-control">
+                <option value="1">Sem 1</option>
+                <option value="2">Sem 2</option>
+                <option value="3" selected>Sem 3</option>
+                <option value="4">Sem 4</option>
+                <option value="5">Sem 5</option>
+                <option value="6">Sem 6</option>
+                <option value="7">Sem 7</option>
+                <option value="8">Sem 8</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" id="reg-submit-btn" class="btn btn-success" style="width: 100%; margin-top: 0.85rem; padding: 0.85rem; font-size: 0.98rem;">
+          Create Account & Log In
+        </button>
+      </form>
+
+      <!-- 1-Click Quick Demo Login Box -->
+      <div class="demo-accounts">
+        <div class="demo-accounts-title">
+          <span>⚡</span>
+          <span>1-Click Demo Evaluation Logins</span>
+        </div>
+        <div class="demo-btn-group">
+          <button type="button" class="btn-demo" onclick="fillDemo('sharma.teacher@sms.edu', 'Teacher@123')">
+            <div>
+              <div style="font-weight: 700;">👨‍🏫 Prof. Rajesh Sharma</div>
+              <div style="font-size: 0.75rem; color: #64748b;">CSE Faculty (Attendance & Marks Entry)</div>
+            </div>
+            <span class="btn-demo-tag" style="background: #d1fae5; color: #065f46;">Teacher</span>
+          </button>
+
+          <button type="button" class="btn-demo" onclick="fillDemo('admin@sms.edu', 'Admin@123')">
+            <div>
+              <div style="font-weight: 700;">🛡️ Dr. Vikram Sethi</div>
+              <div style="font-size: 0.75rem; color: #64748b;">Principal (Full System Administration)</div>
+            </div>
+            <span class="btn-demo-tag" style="background: #e0e7ff; color: #3730a3;">Admin</span>
+          </button>
+
+          <button type="button" class="btn-demo" onclick="fillDemo('rahul@sms.edu', 'Student@123')">
+            <div>
+              <div style="font-weight: 700;">👨‍🎓 Rahul Sharma</div>
+              <div style="font-size: 0.75rem; color: #64748b;">Roll: CSE2026001 (Sem 3 Transcript)</div>
+            </div>
+            <span class="btn-demo-tag" style="background: #fef3c7; color: #92400e;">Student</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script>
+    if (window.smsAuth.isAuthenticated()) {
+      window.location.href = 'dashboard.html';
+    }
+
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const alertBox = document.getElementById('login-alert');
+    const loginSubmitBtn = document.getElementById('login-submit-btn');
+    const regSubmitBtn = document.getElementById('reg-submit-btn');
+
+    function switchAuthTab(tab) {
+      alertBox.style.display = 'none';
+      if (tab === 'signin') {
+        document.getElementById('tab-signin-btn').classList.add('active');
+        document.getElementById('tab-register-btn').classList.remove('active');
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+      } else {
+        document.getElementById('tab-signin-btn').classList.remove('active');
+        document.getElementById('tab-register-btn').classList.add('active');
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+      }
+    }
+
+    function togglePasswordVisibility(fieldId) {
+      const field = document.getElementById(fieldId);
+      if (!field) return;
+      if (field.type === 'password') {
+        field.type = 'text';
+      } else {
+        field.type = 'password';
+      }
+    }
+
+    function onRoleChange() {
+      const role = document.getElementById('reg-role').value;
+      const studentFields = document.getElementById('student-extra-fields');
+      studentFields.style.display = role === 'student' ? 'block' : 'none';
+    }
+
+    function fillDemo(email, password) {
+      switchAuthTab('signin');
+      document.getElementById('email').value = email;
+      document.getElementById('password').value = password;
+      loginForm.dispatchEvent(new Event('submit'));
+    }
+
+    // Handle Login
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertBox.style.display = 'none';
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      loginSubmitBtn.disabled = true;
+      loginSubmitBtn.textContent = 'Verifying credentials...';
+
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Login failed. Please check your credentials.');
+        }
+
+        window.smsAuth.saveAuth(data.token, data.user);
+
+        alertBox.style.display = 'block';
+        alertBox.style.backgroundColor = '#ecfdf5';
+        alertBox.style.color = '#065f46';
+        alertBox.style.border = '1px solid #a7f3d0';
+        alertBox.textContent = `Welcome back, ${data.user.name}! Redirecting to ${data.user.role.toUpperCase()} portal...`;
+
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 400);
+
+      } catch (err) {
+        alertBox.style.display = 'block';
+        alertBox.style.backgroundColor = '#fef2f2';
+        alertBox.style.color = '#991b1b';
+        alertBox.style.border = '1px solid #fecaca';
+        alertBox.innerHTML = `
+          <strong>${err.message}</strong><br>
+          <span style="font-size: 0.8rem; margin-top: 0.25rem; display: block;">
+            Don't have an account yet? Click <strong>Create Account</strong> above, or use the 1-Click Demo Logins below.
+          </span>
+        `;
+
+        loginSubmitBtn.disabled = false;
+        loginSubmitBtn.textContent = 'Sign In';
+      }
+    });
+
+    // Handle Registration
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertBox.style.display = 'none';
+
+      const payload = {
+        name: document.getElementById('reg-name').value.trim(),
+        email: document.getElementById('reg-email').value.trim(),
+        password: document.getElementById('reg-password').value,
+        role: document.getElementById('reg-role').value,
+        rollNumber: document.getElementById('reg-roll')?.value.trim() || undefined,
+        semester: document.getElementById('reg-semester')?.value || 1
+      };
+
+      regSubmitBtn.disabled = true;
+      regSubmitBtn.textContent = 'Creating account...';
+
+      try {
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Registration failed.');
+        }
+
+        window.smsAuth.saveAuth(data.token, data.user);
+
+        alertBox.style.display = 'block';
+        alertBox.style.backgroundColor = '#ecfdf5';
+        alertBox.style.color = '#065f46';
+        alertBox.style.border = '1px solid #a7f3d0';
+        alertBox.textContent = `Account created successfully! Redirecting as ${data.user.role.toUpperCase()}...`;
+
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 500);
+
+      } catch (err) {
+        alertBox.style.display = 'block';
+        alertBox.style.backgroundColor = '#fef2f2';
+        alertBox.style.color = '#991b1b';
+        alertBox.style.border = '1px solid #fecaca';
+        alertBox.textContent = err.message;
+
+        regSubmitBtn.disabled = false;
+        regSubmitBtn.textContent = 'Create Account & Log In';
+      }
+    });
+  </script>
+</body>
+</html>
