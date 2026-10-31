@@ -109,6 +109,31 @@
       "phone": "+91 99999 88888",
       "linkedStudentId": "6adb103a6e4b16fbe854ed0f",
       "createdAt": "2026-10-23T07:43:54.127Z"
+    },
+    {
+      "_id": "6add02d123d142b084611c16",
+      "status": "active",
+      "name": "Test Student",
+      "username": "test073590",
+      "email": "test_1792869073590@sms.edu",
+      "password": "$2b$10$3gkGljb94rELm0tf4xjkCO/R0IbztRRUZ7uATQWYXbxgTR8njWdLi",
+      "role": "student",
+      "phone": "+91 99999 88888",
+      "linkedStudentId": "6add02d123d142b084611c15",
+      "createdAt": "2026-10-24T19:11:13.653Z"
+    },
+    {
+      "_id": "6ae231b7cd7bda6052c5840d",
+      "status": "active",
+      "name": "anu",
+      "username": "anup",
+      "email": "anup@gmail.com",
+      "password": "$2b$10$Zh.rkhE24QZ8CuwVKnA0reAD6PiaouWCNbQeBJ50T7Ohf1uRuc4uK",
+      "role": "student",
+      "department": "CSE",
+      "phone": "",
+      "linkedStudentId": "6ae231b7cd7bda6052c5840c",
+      "createdAt": "2026-10-28T17:32:39.394Z"
     }
   ],
   "students": [
@@ -249,6 +274,33 @@
       "semester": 3,
       "section": "A",
       "createdAt": "2026-10-23T07:43:54.054Z"
+    },
+    {
+      "_id": "6add02d123d142b084611c15",
+      "status": "active",
+      "name": "Test Student",
+      "rollNumber": "TEST073590",
+      "email": "test_1792869073590@sms.edu",
+      "phone": "+91 99999 88888",
+      "address": "",
+      "dob": "2005-01-01",
+      "courseName": "BTech CSE",
+      "semester": 3,
+      "section": "A",
+      "createdAt": "2026-10-24T19:11:13.592Z"
+    },
+    {
+      "_id": "6ae231b7cd7bda6052c5840c",
+      "status": "active",
+      "name": "anu",
+      "rollNumber": "0255CSE031A",
+      "email": "anup@gmail.com",
+      "phone": "+91 98765 00000",
+      "dob": "2005-01-01",
+      "courseName": "BTech CSE",
+      "semester": 3,
+      "section": "A",
+      "createdAt": "2026-10-28T17:32:39.394Z"
     }
   ],
   "courses": [
@@ -261,7 +313,8 @@
       "credits": 4,
       "teacherId": "6adaf81b7026bd63aa81b552",
       "description": "Arrays, Stacks, Queues, Linked Lists, Trees, Graphs, Sorting & Searching.",
-      "createdAt": "2026-10-23T06:00:59.861Z"
+      "createdAt": "2026-10-23T06:00:59.861Z",
+      "updatedAt": "2026-10-24T19:11:48.497Z"
     },
     {
       "_id": "6adaf81b7026bd63aa81b555",
@@ -317,6 +370,17 @@
       "teacherId": null,
       "description": "",
       "createdAt": "2026-10-23T06:45:41.767Z"
+    },
+    {
+      "_id": "6ae23474cd7bda6052c5840f",
+      "name": "Technical Communcation",
+      "code": "TC306",
+      "semester": 2,
+      "department": "CSE",
+      "credits": 4,
+      "teacherId": null,
+      "description": "",
+      "createdAt": "2026-10-28T17:44:20.384Z"
     }
   ],
   "attendance": [
@@ -1529,7 +1593,7 @@
       "markedBy": "6adaf81b7026bd63aa81b552",
       "remarks": "",
       "createdAt": "2026-10-23T06:00:59.863Z",
-      "updatedAt": "2026-10-23T07:43:54.132Z"
+      "updatedAt": "2026-10-24T19:11:13.656Z"
     },
     {
       "_id": "6adaf81b7026bd63aa81b5da",
@@ -1877,6 +1941,126 @@
       "markedBy": "6adaf81b7026bd63aa81b551",
       "remarks": "",
       "createdAt": "2026-10-23T06:51:31.047Z"
+    },
+    {
+      "_id": "6add03dee94a110332d3f22c",
+      "studentId": "6adb034e9983d97839812111",
+      "courseId": "6adaf81b7026bd63aa81b554",
+      "date": "2026-10-24",
+      "status": "Present",
+      "markedBy": "6adaf81b7026bd63aa81b552",
+      "remarks": "present ",
+      "createdAt": "2026-10-24T19:15:42.639Z",
+      "updatedAt": "2026-10-24T19:16:24.273Z"
+    },
+    {
+      "_id": "6add03dee94a110332d3f22d",
+      "studentId": "6adb01eb9983d97839812106",
+      "courseId": "6adaf81b7026bd63aa81b554",
+      "date": "2026-10-24",
+      "status": "Present",
+      "markedBy": "6adaf81b7026bd63aa81b552",
+      "remarks": "",
+      "createdAt": "2026-10-24T19:15:42.641Z",
+      "updatedAt": "2026-10-24T19:16:24.275Z"
+    },
+    {
+      "_id": "6add03dee94a110332d3f22e",
+      "studentId": "6adaf81b7026bd63aa81b559",
+      "courseId": "6adaf81b7026bd63aa81b554",
+      "date": "2026-10-24",
+      "status": "Present",
+      "markedBy": "6adaf81b7026bd63aa81b552",
+      "remarks": "",
+      "createdAt": "2026-10-24T19:15:42.643Z",
+      "updatedAt": "2026-10-24T19:16:24.277Z"
+    },
+    {
+      "_id": "6add03dee94a110332d3f22f",
+      "studentId": "6adaf81b7026bd63aa81b55a",
+      "courseId": "6adaf81b7026bd63aa81b554",
+      "date": "2026-10-24",
+      "status": "Present",
+      "markedBy": "6adaf81b7026bd63aa81b552",
+      "remarks": "",
+      "createdAt": "2026-10-24T19:15:42.644Z",
+      "updatedAt": "2026-10-24T19:16:24.280Z"
+    },
+    {
+      "_id": "6add03dee94a110332d3f230",
+      "studentId": "6adaf81b7026bd63aa81b55b",
+      "courseId": "6adaf81b7026bd63aa81b554",
+      "date": "2026-10-24",
+      "status": "Present",
+      "markedBy": "6adaf81b7026bd63aa81b552",
+      "remarks": "",
+      "createdAt": "2026-10-24T19:15:42.645Z",
+      "updatedAt": "2026-10-24T19:16:24.282Z"
+    },
+    {
+      "_id": "6add03dee94a110332d3f231",
+      "studentId": "6adaf81b7026bd63aa81b55c",
+      "courseId": "6adaf81b7026bd63aa81b554",
+      "date": "2026-10-24",
+      "status": "Present",
+      "markedBy": "6adaf81b7026bd63aa81b552",
+      "remarks": "",
+      "createdAt": "2026-10-24T19:15:42.647Z",
+      "updatedAt": "2026-10-24T19:16:24.285Z"
+    },
+    {
+      "_id": "6add03dee94a110332d3f232",
+      "studentId": "6adaf81b7026bd63aa81b55d",
+      "courseId": "6adaf81b7026bd63aa81b554",
+      "date": "2026-10-24",
+      "status": "Present",
+      "markedBy": "6adaf81b7026bd63aa81b552",
+      "remarks": "",
+      "createdAt": "2026-10-24T19:15:42.649Z",
+      "updatedAt": "2026-10-24T19:16:24.288Z"
+    },
+    {
+      "_id": "6add03dee94a110332d3f233",
+      "studentId": "6add02d123d142b084611c15",
+      "courseId": "6adaf81b7026bd63aa81b554",
+      "date": "2026-10-24",
+      "status": "Present",
+      "markedBy": "6adaf81b7026bd63aa81b552",
+      "remarks": "",
+      "createdAt": "2026-10-24T19:15:42.650Z",
+      "updatedAt": "2026-10-24T19:16:24.290Z"
+    },
+    {
+      "_id": "6add03dee94a110332d3f234",
+      "studentId": "6adb0023de935f75b8c031c6",
+      "courseId": "6adaf81b7026bd63aa81b554",
+      "date": "2026-10-24",
+      "status": "Present",
+      "markedBy": "6adaf81b7026bd63aa81b552",
+      "remarks": "",
+      "createdAt": "2026-10-24T19:15:42.651Z",
+      "updatedAt": "2026-10-24T19:16:24.292Z"
+    },
+    {
+      "_id": "6add03dee94a110332d3f235",
+      "studentId": "6adb103a6e4b16fbe854ed0f",
+      "courseId": "6adaf81b7026bd63aa81b554",
+      "date": "2026-10-24",
+      "status": "Present",
+      "markedBy": "6adaf81b7026bd63aa81b552",
+      "remarks": "",
+      "createdAt": "2026-10-24T19:15:42.653Z",
+      "updatedAt": "2026-10-24T19:16:24.294Z"
+    },
+    {
+      "_id": "6ae23451cd7bda6052c5840e",
+      "studentId": "6adb034e9983d97839812111",
+      "courseId": "6adaf81b7026bd63aa81b554",
+      "date": "2026-10-28",
+      "status": "Absent",
+      "markedBy": "6adaf81b7026bd63aa81b551",
+      "remarks": "",
+      "createdAt": "2026-10-28T17:43:45.861Z"
     }
   ],
   "marks": [
@@ -1890,7 +2074,7 @@
       "enteredBy": "6adaf81b7026bd63aa81b552",
       "createdAt": "2026-10-23T06:00:59.863Z",
       "remarks": "",
-      "updatedAt": "2026-10-23T07:43:54.136Z"
+      "updatedAt": "2026-10-24T19:11:13.658Z"
     },
     {
       "_id": "6adaf81b7026bd63aa81b5f5",

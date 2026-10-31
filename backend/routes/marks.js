@@ -203,10 +203,14 @@ router.get('/course-sheet', authenticateToken, requireRole('admin', 'teacher'), 
     res.json({
       success: true,
       course,
-      students: students.map(s => ({
-        ...s,
-        marks: marksMap[String(s._id)] || {}
-      }))
+      students: students.map(s => {
+        const plain = s.toObject ? s.toObject() : { ...s };
+        return {
+          ...plain,
+          _id: String(plain._id || s._id),
+          marks: marksMap[String(s._id)] || {}
+        };
+      })
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

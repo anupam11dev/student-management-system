@@ -94,13 +94,16 @@ const loadCoursesDropdown = async () => {
           enrolledCoursesList.map(c => `<option value="${c._id}">${c.code} - ${c.name}</option>`).join('');
       }
 
-      // If courses exist, trigger load for first course
+      // If courses exist, prefer the first course that actually has students enrolled.
       if (enrolledCoursesList.length > 0 && select) {
-        // If courseId in URL query, select it
         const urlParams = new URLSearchParams(window.location.search);
         const queryCourseId = urlParams.get('courseId');
+        const courseWithStudents = enrolledCoursesList.find(c => Number(c.studentCount || 0) > 0) || enrolledCoursesList[0];
+
         if (queryCourseId) {
           select.value = queryCourseId;
+        } else if (courseWithStudents) {
+          select.value = courseWithStudents._id;
         } else {
           select.selectedIndex = 1;
         }

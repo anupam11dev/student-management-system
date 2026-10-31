@@ -3,4 +3,5 @@ git rm .env.examplenode_modules/
 .DS_Store
 *.log
 data/*.backup.json
+node_modules/
 

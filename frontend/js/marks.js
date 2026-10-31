@@ -105,11 +105,14 @@ const loadCoursesDropdown = async () => {
           select.innerHTML = '<option value="">-- Select Course --</option>' +
             assignedCourses.map(c => `<option value="${c._id}">${c.code} - ${c.name} (Sem ${c.semester})</option>`).join('');
 
-          // Auto select if query param or first course
+          // Auto select the first course with students or the direct query value if present.
           const urlParams = new URLSearchParams(window.location.search);
           const qId = urlParams.get('courseId');
+          const preferredCourse = assignedCourses.find(c => Number(c.studentCount || 0) > 0) || assignedCourses[0];
           if (qId) {
             select.value = qId;
+          } else if (preferredCourse) {
+            select.value = preferredCourse._id;
           } else {
             select.selectedIndex = 1;
           }

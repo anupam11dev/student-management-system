@@ -40,8 +40,11 @@ router.get('/', authenticateToken, async (req, res) => {
         const studentCount = await Student.countDocuments({
           semester: course.semester
         });
+        // Use toObject() if Mongoose document, otherwise use plain object directly
+        const plainCourse = course.toObject ? course.toObject() : { ...course };
         return {
-          ...course,
+          ...plainCourse,
+          _id: String(plainCourse._id || course._id),
           studentCount
         };
       })
