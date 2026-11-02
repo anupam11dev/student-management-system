@@ -2,6 +2,20 @@
 > **BTech CSE Mini Project** | Web-based Academic Administration Suite  
 > Built with HTML5, CSS3, Vanilla JavaScript, Node.js, Express.js, and MongoDB + Mongoose.
 
+## Vercel Deployment
+
+Deploy the repository with the Vercel project **Root Directory** set to `.` (the repository root). Leave the build command and output directory empty; Vercel serves the root `index.html` and creates the API function from `api/[...path].js`.
+
+Add these environment variables in **Vercel → Settings → Environment Variables**:
+
+- `MONGODB_URI`: a MongoDB Atlas connection string for the production database
+- `JWT_SECRET`: a long, unique secret (do not reuse the example or commit it)
+- `JWT_EXPIRE`: optional; defaults to `24h`
+
+Allow the Vercel deployment to connect to the Atlas cluster using the cluster's network access settings. If the production database is empty, seed it once by running `npm run seed` locally with `MONGODB_URI` set to the same database. **The seed script clears existing records**, so do not run it against a database containing data you need to keep. Do not rely on the local JSON fallback in a serverless deployment; API requests return `503` if MongoDB or `JWT_SECRET` is not configured.
+
+Push the changes to the connected GitHub branch to trigger a new production deployment. After deployment, check `/` for the login page and `/api/health` for API status.
+
 ---
 
 ## 1. Overview
@@ -212,4 +226,3 @@ This project has been structured according to standard university BTech CSE Mini
 ## 9. License
 
 This project is developed as part of the BTech Computer Science & Engineering curriculum and is licensed under the **MIT License**.
-
