@@ -22,6 +22,16 @@ const saveAuth = (token, user) => {
   localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
 };
 
+const readApiResponse = async (response) => {
+  const contentType = response.headers.get('content-type') || '';
+  if (!contentType.includes('application/json')) {
+    throw new Error(
+      `API returned a non-JSON response (HTTP ${response.status}). Check the Vercel API routing and redeploy.`
+    );
+  }
+  return response.json();
+};
+
 const logout = () => {
   localStorage.removeItem(AUTH_TOKEN_KEY);
   localStorage.removeItem(AUTH_USER_KEY);
@@ -68,7 +78,7 @@ const apiRequest = async (url, options = {}) => {
       headers
     });
 
-    const data = await response.json();
+    const data = await readApiResponse(response);
 
     if (response.status === 401) {
       // Session expired or invalid token
@@ -123,9 +133,9 @@ window.smsAuth = {
   getUser,
   isAuthenticated,
   saveAuth,
+  readApiResponse,
   logout,
   requireAuth,
   apiRequest,
   showToast
 };
-

@@ -374,7 +374,7 @@
           body: JSON.stringify({ email, password })
         });
 
-        const data = await response.json();
+        const data = await window.smsAuth.readApiResponse(response);
 
         if (!response.ok) {
           throw new Error(data.message || 'Login failed. Please check your credentials.');
@@ -433,7 +433,7 @@
           body: JSON.stringify(payload)
         });
 
-        const data = await response.json();
+        const data = await window.smsAuth.readApiResponse(response);
 
         if (!response.ok) {
           throw new Error(data.message || 'Registration failed.');

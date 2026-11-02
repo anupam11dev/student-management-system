@@ -4,7 +4,7 @@
 
 ## Vercel Deployment
 
-Deploy the repository with the Vercel project **Root Directory** set to `.` (the repository root). Leave the build command and output directory empty; Vercel serves the root `index.html` and creates the API function from `api/[...path].js`.
+Deploy the repository with the Vercel project **Root Directory** set to `.` (the repository root). Leave the build command and output directory empty; Vercel serves the root `index.html` and rewrites `/api/*` requests to the Express API function in `api/index.js`.
 
 Add these environment variables in **Vercel → Settings → Environment Variables**:
 
