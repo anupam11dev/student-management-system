@@ -1,4 +1,4 @@
-# Student Management System (SMS)
+--# Student Management System (SMS)
 > **BTech CSE Mini Project** | Web-based Academic Administration Suite  
 > Built with HTML5, CSS3, Vanilla JavaScript, Node.js, Express.js, and MongoDB + Mongoose.
 
